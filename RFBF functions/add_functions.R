@@ -1,10 +1,15 @@
+#' 
+#' This file contains user-defined functions 
+#' 
 
-### Find the norm of vector x
+
+### The norm2 function used to find the norm of a vector x
 norm2 <- function(x) {
   return(sqrt(sum (x^2)))
 }
 
-### calculate the distance between 2 points 
+### The dist_pt function used to calculate the distance 
+### between points p1 and p2
 dist_pt <-function(p1,p2)
 {
   v <- p2-p1
@@ -30,7 +35,10 @@ xyangle <- function(x,y) {
 
 
 
-# find local points with fixed number 
+### The local_fixed_pts function used to find local points with fixed number 
+#' @param p The center point 
+#' @param range The number of local points 
+#' @param manifoldata The given data set
 
 local_fixed_pts <-function(p,range,manifoldata){
   
@@ -57,8 +65,10 @@ local_fixed_pts <-function(p,range,manifoldata){
   return(local_manifoldata)
 }
 
-# find local points with fixed distance 
-
+### The local_pts function used to find local points with fixed distance 
+#' @param p The center point 
+#' @param range The local distance
+#' @param manifoldata The given data set
 local_pts <-function(p,range,manifoldata){
   
   dimension <- nrow(manifoldata)
@@ -79,10 +89,9 @@ local_pts <-function(p,range,manifoldata){
 
 
 
-### Given n points on the sphere and a point X. 
-### Rescale n points to the sphere of radius |X|.
-### Find the covariance matrix at point X
-
+### The cov_mat function used to calculate the covariance matrix at point X
+#' @param conedata The given data 
+#' @param X The center point to compute covariance matrix
 cov_mat <- function(conedata, X) {
   
   n <- ncol(conedata)
@@ -102,8 +111,10 @@ cov_mat <- function(conedata, X) {
   return(avg_mat)
 }
 
-### Find the kth eigenvector and eigenvalue of a given matrix
-
+### The kth_eigen function used to find the kth eigenvector and eigenvalue of 
+### a given matrix
+#' @param mat The given variance matrix
+#' @param k The index of the kth_eigen components
 kth_eigen <- function(mat,k){
   
   if (k > min(dim(mat)) ) {     
@@ -127,7 +138,13 @@ kth_eigen <- function(mat,k){
 }
 
 
-## vector field not using the eigenvalues
+### The kth_vector_field function finds the vector field at a point w/o using 
+### the eigenvalues
+#' @param manifoldata The given data set 
+#' @param X The point to compute the vector field 
+#' @param vec_direct The vector direction to determine the direction of the 
+#' vector field
+#' @param k The index of the kth-eigen components
 kth_vector_field <- function(manifoldata, X, vec_direct,k) {
   
   matX <- cov_mat(manifoldata,X)
@@ -148,13 +165,23 @@ kth_vector_field <- function(manifoldata, X, vec_direct,k) {
 }
 
 
-### Scale a vector to a specified length.
+### The normalise functions scales a vector to a specified length
+#' @param v The given vector 
+#' @param length The scaled length
 normalise <- function(v, length=1){
   return((length/norm2(v))*v)
 }
 
 
-## Function that solves the BVP-DAE given a particular value of delta.
+### The gamma_given function generates initial flows 
+#' @param resolution The number of discrete points on the initial flow 
+#' @param y0 The starting (boundary) point
+#' @param y1 The ending (boundary) point
+#' @param method The ways to generate initial flows 
+#'       @example method = 1 A straight line in the ambient space 
+#'       @example method = 2 A geodesic on the testing manifold
+#'       @example method = 3 A flow on the unit sphere
+#' @param dimension The dimension of the embient space
 gamma_given<-function(resolution,y0,y1,method,dimension=3,...){
   if(method==1){
     # straight line not in the manifold
@@ -202,8 +229,10 @@ gamma_given<-function(resolution,y0,y1,method,dimension=3,...){
 
 
 
-### Exponential map from tangent space to the sphere
-
+### The expmapsph function used to find the exponential map from tangent space 
+### to the sphere
+#' @param x A point 
+#' @param v A tangent vector 
 expmapsph <-  function(x,v) {
   
   normv <- norm2(v)
@@ -216,9 +245,10 @@ expmapsph <-  function(x,v) {
   return(y/norm2(y))    
 }
 
-### Log map (inverse of Exponential map) from
+### The logmapsph function finds the Log map (inverse of Exponential map) from
 ### sphere to tangent space
-
+#' @param x A point on the unit sphere
+#' @param y A point on the unit sphere
 logmapsph <- function(x,y) {
   
   alpha <- xyangle(x,y)
@@ -229,7 +259,12 @@ logmapsph <- function(x,y) {
   return(v)
 }
 
-# select a subset of the given data set
+### The sub_data function selects a subset of the given data set 
+#' @param h_sub The radius to select the subset of the given data
+#' @param y0 The starting (boundary) point
+#' @param y1 The ending (boundary) point
+#' @param resolution The number of discrete points on the flow
+#' @param manifoldate The given data set
 sub_data <- function(h_sub, y0,y1,resolution,manifoldata){
   
   dimension <- nrow(manifoldata)
@@ -263,7 +298,10 @@ sub_data <- function(h_sub, y0,y1,resolution,manifoldata){
 }
 
 
-# map points to the data cloud
+### The proj_updated function maps points to the given data set
+#' @param point A given data point 
+#' @param rr The radius to perform local smoothing 
+#' @param data The given data set
 proj_updated <- function(point,rr,data){
   num_data <- ncol(data)
   #step 1: find the nearest point

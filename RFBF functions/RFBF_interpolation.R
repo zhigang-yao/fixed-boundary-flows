@@ -1,6 +1,15 @@
-######################################################################
-## linear interpolation 
-
+### LINEAR INTERPOLATION ALGORITHM 
+#' @description An algorithm to perform linear interpolation to the flow by 
+#' using the following parameters.  
+#' 
+#' @param curve_input The input flow 
+#' @param dist_ini The distance to control the minimum distance between points
+#' @param sphere Whether the testing manifold is unit spheres (TRUE/FALSE)
+#' 
+#' 
+#' @export curve_output The flow after interpolation
+#' 
+#' 
 FBF_interpolation <- function(curve_input,dist_ini,sphere=TRUE){
   
   pt1 = curve_input[,1]

@@ -1,9 +1,29 @@
-## RFBF FITTING ALGORITHM 
+### FBF FITTING ALGORITHM 
+#' @description An iterative algorithm to obtain FBF using the following 
+#' parameters. The algorithm starts from the initial flow and update the flow 
+#' to capture the maximum local variation during iterations. Finally, the 
+#' algorithm returns a discrete flow until the stopping criterion is met. 
+#' 
+#' @param gamma_ini The initial flow started FBF fitting
+#' @param manifoldata The given data set 
+#' @param y0 The starting (boundary) point
+#' @param y1 The ending (boundary) point
+#' @param h The scale parameter to capture the local variation
+#' @param rho The shrinkage constant used during iterations 
+#' @param fixed_num_points Whether use fixed number of local points to determine
+#' local variation (TRUE/FALSE)
+#'      @example fixed_num_points=TRUE The parameter h is to set integer values 
+#'      of the number of local points
+#'      @example fixed_num_points=FALSE The parameter h is to set the radius of 
+#'      local neighborhood
+#' @param interpolation Whether implement interpolation during iterations 
+#' (TRUE/FALSE)
+#' 
+#' 
+#' @export gamma_proj The updated flow from y0 to y1
 
 
-## FBF algorithm 
-
-RFBF_fitting <- function(gamma_ini, manifoldata, y0,y1,h,roh,fixed_num_points = FALSE, interpolation=FALSE){
+RFBF_fitting <- function(gamma_ini, manifoldata, y0,y1,h,rho,fixed_num_points = FALSE, interpolation=FALSE){
   ## settings 
   dimension <- nrow(manifoldata)
   
@@ -15,7 +35,7 @@ RFBF_fitting <- function(gamma_ini, manifoldata, y0,y1,h,roh,fixed_num_points = 
   
   vec_direct = (y1-y0)/norm2(y1-y0)
   
-  ## FBF algorithm begins 
+  ## FBF algorithm iteration begins here
   
   finish <- FALSE
   
@@ -23,7 +43,7 @@ RFBF_fitting <- function(gamma_ini, manifoldata, y0,y1,h,roh,fixed_num_points = 
   
   obj_val <- 0
   
-  stop_cri <- 1e-2
+  stop_cri <- eps
   
   while(finish==FALSE){
     
@@ -31,7 +51,7 @@ RFBF_fitting <- function(gamma_ini, manifoldata, y0,y1,h,roh,fixed_num_points = 
       gamma <- gamma_ini
       
     }else{
-      h <- roh*h
+      h <- rho*h
       gamma <- gamma_proj
       
     }
@@ -122,4 +142,3 @@ RFBF_fitting <- function(gamma_ini, manifoldata, y0,y1,h,roh,fixed_num_points = 
 
 
 
-#################################################################

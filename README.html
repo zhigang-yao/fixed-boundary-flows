@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/default.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath/css/texmath.min.css">
+<link rel="stylesheet" href="file:///c:\Users\rambu\.vscode\extensions\goessner.mdmath-2.7.4\themes\default\style.css">
+
+</head>
+<body class="markdown-body">
+<div
+            class="github-markdown-body"
+            data-color-mode="light"
+            data-light-theme="light"
+            data-dark-theme="dark"
+        >
+            <div class="github-markdown-content"><h1 dir="auto" id="fixed-boundary-flow-fbf-algorithm">Fixed Boundary Flow (FBF) Algorithm</h1>
+<p dir="auto">This is a repository of random fixed boundary flows proposed in Yao, Z., Xia, Y. and Fan, Z. (2022). <a href="https://arxiv.org/abs/1904.11332">Random Fixed Boundary Flows</a>. arXiv: 1904.11332</p>
+<h2 dir="auto" id="the-fbf-algorithm">The FBF Algorithm</h2>
+<p dir="auto">The FBF Algorithm obtains a discrete flow connecting the fixed boundary points <code>y0</code> and <code>y1</code> from the given manifold date in the ambient space. Each point of the flow moves along the direction of the local vector field, which is determined by the scale parameter <code>h</code>.</p>
+<p dir="auto">The core part of the algorithm is contained in the following four R source files.</p>
+<ul dir="auto">
+<li dir="auto"><a href="./RFBF%20functions/add_functions.R"><strong>add_functions.R</strong></a> contains all the user-defined functions for the calculation. For example, finding local points in a given neighbourhood and computing the <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></eq>-eigenvector.</li>
+<li dir="auto"><a href="./RFBF%20functions/RFBF_fitting_function.R"><strong>RFBF_fitting_function.R</strong></a> contains the iterative algorithm to determine FBFs. This file is corresponding to steps 1 to 3 in <em>Algorithm 1</em> in the paper.</li>
+<li dir="auto"><a href="./RFBF%20functions/RFBF_interpolation.R"><strong>RFBF_interpolation.R</strong></a> performs linear interpolation to the flow. This file is corresponding to step 4 in <em>Algorithm 1</em> in the paper.</li>
+<li dir="auto"><a href="./RFBF%20functions/RFBF_smoothing.R"><strong>RFBF_smoothing.R</strong></a> performs local smoothing to the flow when necessary.</li>
+</ul>
+<h2 dir="auto" id="synthetic-data-studies">Synthetic Data Studies</h2>
+<p dir="auto">Two testing manifolds, unit sphere <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>S</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">S^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></eq> and a right-circular unit cone, have been investigated to study the performance of the FBF algorithm when analysing random data sets.</p>
+<h3 dir="auto" id="rfbfs-on-the-unit-sphere">RFBFs on the unit sphere</h3>
+<p dir="auto">We considered the following three types of population curves and used them to generate random data sets.</p>
+<ul dir="auto">
+<li dir="auto"><a href="./data%20sets/sphere_c.csv"><strong>sphere_c.csv</strong></a> contains a <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span></eq>-shaped population flow which presents a variation pattern along the geodesic.</li>
+<li dir="auto"><a href="./data%20sets/sphere_6fold.csv"><strong>sphere_6fold.csv</strong></a> contains a quarter of the six-fold star-shaped flow.</li>
+<li dir="auto"><a href="./data%20sets/sphere_2fold.csv"><strong>sphere_2fold.csv</strong></a> contains half of the two-fold star-shaped flow.</li>
+</ul>
+<p dir="auto">The file <a href="./Simulation%20Demo%20Sphere.R"><strong>Simulation Demo Sphere.R</strong></a> generates the numeric results in Figures 5-6 and <em>Table 1</em>. The R file consists of two parts:</p>
+<ol dir="auto">
+<li dir="auto">Generating random data sets using parameters <code>type</code>, <code>case</code> and <code>sd</code>. For example, we set <code>type=&quot;sphere&quot;</code>, <code>case=&quot;c&quot;</code> and <code>sd=0.015</code> to generate the noisy <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span></eq>-shaped data shown in <em>Figure 5(a)</em>.</li>
+<li dir="auto">Fitting the FBF using parameters <code>y0</code>, <code>y1</code>, <code>resolution</code>, <code>h</code>, <code>rho</code>, and <code>esp</code>.
+For example, we set <code>y0=c(0.58676580, 0.03460339, 0.80901699)</code>, <code>y1=c(-0.3904378, 0.4393744, 0.8090170)</code>, <code>resolution=20</code>, <code>h=0.08</code>, <code>rho=0.95</code>, <code>eps=0.01</code> and obtained the flow plotted in <em>Figure 5(d)</em>. In <em>Figures 5-6</em>, we visualise the FBFs in the ambient space using R package <span style="color: red;"><code>rgl</code></span>. To obtain the mean errors in <em>Table 1</em>, we generated 10 random data sets for each population flow and run the FBF algorithm with different values of <code>h</code>.</li>
+</ol>
+<h3 dir="auto" id="rfbfs-on-a-right-circular-unit-cone">RFBFs on a right-circular unit cone</h3>
+<p dir="auto">We considered the following three types of population curves on a right-circular unit cone with apex at <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mn>0</mn><mo separator="true">,</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(0, 0, 0)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mclose">)</span></span></span></span></eq>, height <code>H = 1</code>, and radius <code>R = 1</code>. Then, we generated random data sets using these population flows.</p>
+<ul dir="auto">
+<li dir="auto"><a href="./data%20sets/cone_c.csv"><strong>cone_c.csv</strong></a> contains a <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span></eq>-shaped population flow on the cone.</li>
+<li dir="auto"><a href="./data%20sets/cone_s_short.csv"><strong>cone_s_short.csv</strong></a> contains half of the <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span></eq>-shaped population flow.</li>
+<li dir="auto"><a href="./data%20sets/cone_s_long.csv"><strong>cone_s_long.csv</strong></a> contains a <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span></eq>-shaped population flow.</li>
+</ul>
+<p dir="auto">The file <a href="./Simulation%20Demo%20Cone.R"><strong>Simulation Demo Cone.R</strong></a> generates the numeric results in <em>Figures 7</em> and <em>Table 1</em>. The R file consists of two parts:</p>
+<ol dir="auto">
+<li dir="auto">Generating random data sets using parameters <code>type</code>, <code>case</code>, <code>sd</code>, <code>R</code> and <code>H</code>. For example, we set <code>type=&quot;cone&quot;</code>, <code>case=&quot;c&quot;</code>, <code>sd=0.015</code>, <code>R=1</code> and <code>H=1</code> to generate the noisy band data set shown in <em>Figure 7(a)</em>.</li>
+<li dir="auto">Fitting the FBF using parameters <code>y0</code>, <code>y1</code>, <code>resolution</code>, <code>h</code>, <code>rho</code>, and <code>esp</code>. For example, we set <code>y0=c(-0.4194, -0.1886, 0.4598)</code>, <code>y1=c(-0.2875, -0.6366, 0.6986)</code>, <code>resolution=30</code>, <code>h=0.14</code>, <code>rho=0.95</code>, <code>eps=0.01</code> and obtained the flow plotted in <span style="color: red;">red</span> in <em>Figure 7(a)</em>.</li>
+</ol>
+<p dir="auto">In <em>Figures 7(a)-(c)</em>, we visualise the FBFs in the ambient space using R package <span style="color: red;"><code>rgl</code></span>. To obtain the mean errors in <em>Table 1</em>, we generated 10 random data sets for each population flow and run the FBF algorithm with different values of <code>h</code>.</p>
+<h3 dir="auto" id="figure-5f-example"><em>Figure 5(f)</em> Example</h3>
+<p dir="auto">To get the FBF in <em>Figure 5(f)</em>, we use the code from <a href="./Simulation%20Demo%20Sphere.R"><strong>Simulation Demo Sphere.R</strong></a>.</p>
+<div  dir="auto" ></div>
+<center><img src="./Images/Figure5.JPG" alt="centered image" width="800"/></center>
+<h4 dir="auto" id="step-1-generate-the-random-data">Step 1: Generate the random data</h4>
+<pre><code class="code-line language-R" dir="auto"><div><span class="hljs-comment"># example begins here</span>
+type <span class="hljs-operator">=</span> <span class="hljs-string">&quot;sphere&quot;</span>
+
+case <span class="hljs-operator">=</span> <span class="hljs-string">&quot;2fold&quot;</span> <span class="hljs-comment">#  &quot;6fold&quot; # &quot;c&quot; #</span>
+
+sd <span class="hljs-operator">&lt;-</span> 0.015
+
+showcase <span class="hljs-operator">=</span> paste<span class="hljs-punctuation">(</span>type<span class="hljs-punctuation">,</span><span class="hljs-string">&quot;_&quot;</span><span class="hljs-punctuation">,</span>case<span class="hljs-punctuation">,</span>sep<span class="hljs-operator">=</span><span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">)</span>
+
+<span class="hljs-keyword">if</span><span class="hljs-punctuation">(</span>showcase<span class="hljs-operator">==</span><span class="hljs-string">&quot;sphere_c&quot;</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">{</span>
+  <span class="hljs-comment"># population flow</span>
+  pure_curve <span class="hljs-operator">=</span> data.matrix<span class="hljs-punctuation">(</span>read.csv<span class="hljs-punctuation">(</span><span class="hljs-string">&quot;./data sets/sphere_c.csv&quot;</span><span class="hljs-punctuation">,</span> header<span class="hljs-operator">=</span><span class="hljs-literal">FALSE</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+  <span class="hljs-comment"># set boundary points</span>
+  y0 <span class="hljs-operator">&lt;-</span> <span class="hljs-built_in">c</span><span class="hljs-punctuation">(</span><span class="hljs-number">0.58676580</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.03460339</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.80901699</span><span class="hljs-punctuation">)</span>
+  y1 <span class="hljs-operator">&lt;-</span> <span class="hljs-built_in">c</span><span class="hljs-punctuation">(</span><span class="hljs-operator">-</span><span class="hljs-number">0.3904378</span><span class="hljs-punctuation">,</span>  <span class="hljs-number">0.4393744</span><span class="hljs-punctuation">,</span>  <span class="hljs-number">0.8090170</span><span class="hljs-punctuation">)</span>
+  <span class="hljs-comment"># set RFBF parameters </span>
+  resolution <span class="hljs-operator">&lt;-</span> 20
+  h <span class="hljs-operator">&lt;-</span> 0.14 
+  rho <span class="hljs-operator">&lt;-</span> 0.95
+  eps <span class="hljs-operator">&lt;-</span> 1e<span class="hljs-operator">-</span><span class="hljs-number">2</span>
+<span class="hljs-punctuation">}</span><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span><span class="hljs-punctuation">(</span>showcase<span class="hljs-operator">==</span><span class="hljs-string">&quot;sphere_6fold&quot;</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">{</span>
+  <span class="hljs-comment"># population flow</span>
+  pure_curve <span class="hljs-operator">=</span> data.matrix<span class="hljs-punctuation">(</span>read.csv<span class="hljs-punctuation">(</span><span class="hljs-string">&quot;./data sets/sphere_6fold.csv&quot;</span><span class="hljs-punctuation">,</span>
+                                    header<span class="hljs-operator">=</span><span class="hljs-literal">FALSE</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+  <span class="hljs-comment"># set boundary points</span>
+  y0 <span class="hljs-operator">&lt;-</span> <span class="hljs-built_in">c</span><span class="hljs-punctuation">(</span><span class="hljs-operator">-</span><span class="hljs-number">0.011409</span><span class="hljs-punctuation">,</span>  <span class="hljs-number">0.594140</span><span class="hljs-punctuation">,</span>  <span class="hljs-number">0.804280</span><span class="hljs-punctuation">)</span>
+  y1 <span class="hljs-operator">&lt;-</span> <span class="hljs-built_in">c</span><span class="hljs-punctuation">(</span><span class="hljs-operator">-</span><span class="hljs-number">0.593770</span><span class="hljs-punctuation">,</span>  <span class="hljs-number">0.012112</span><span class="hljs-punctuation">,</span>  <span class="hljs-number">0.804540</span><span class="hljs-punctuation">)</span>
+  <span class="hljs-comment"># set RFBF parameters </span>
+  resolution <span class="hljs-operator">&lt;-</span> 40
+  h <span class="hljs-operator">&lt;-</span> 0.08
+  rho <span class="hljs-operator">&lt;-</span> 0.95
+  eps <span class="hljs-operator">&lt;-</span> 1e<span class="hljs-operator">-</span><span class="hljs-number">2</span>
+<span class="hljs-punctuation">}</span><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span><span class="hljs-punctuation">(</span>showcase<span class="hljs-operator">==</span><span class="hljs-string">&quot;sphere_2fold&quot;</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">{</span>
+  <span class="hljs-comment"># population flow</span>
+  pure_curve <span class="hljs-operator">=</span> data.matrix<span class="hljs-punctuation">(</span>read.csv<span class="hljs-punctuation">(</span><span class="hljs-string">&quot;./data sets/sphere_2fold.csv&quot;</span><span class="hljs-punctuation">,</span> 
+                                    header<span class="hljs-operator">=</span><span class="hljs-literal">FALSE</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+  <span class="hljs-comment"># set boundary points</span>
+  y0 <span class="hljs-operator">&lt;-</span> <span class="hljs-built_in">c</span><span class="hljs-punctuation">(</span><span class="hljs-number">0.37931</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.46014</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.80274</span><span class="hljs-punctuation">)</span>
+  y1 <span class="hljs-operator">&lt;-</span> <span class="hljs-built_in">c</span><span class="hljs-punctuation">(</span><span class="hljs-operator">-</span><span class="hljs-number">0.46192</span><span class="hljs-punctuation">,</span> <span class="hljs-operator">-</span><span class="hljs-number">0.37645</span><span class="hljs-punctuation">,</span>  <span class="hljs-number">0.80307</span><span class="hljs-punctuation">)</span>
+  <span class="hljs-comment"># set RFBF parameters </span>
+  resolution <span class="hljs-operator">&lt;-</span> 30
+  h <span class="hljs-operator">&lt;-</span> 0.08
+  rho <span class="hljs-operator">&lt;-</span> 0.95
+  eps <span class="hljs-operator">&lt;-</span> 1e<span class="hljs-operator">-</span><span class="hljs-number">2</span>
+<span class="hljs-punctuation">}</span>
+
+n <span class="hljs-operator">=</span> ncol<span class="hljs-punctuation">(</span>pure_curve<span class="hljs-punctuation">)</span>
+
+<span class="hljs-comment">## generate noisy data </span>
+
+weighted_noise <span class="hljs-operator">=</span> <span class="hljs-literal">FALSE</span>
+manifoldata <span class="hljs-operator">&lt;-</span> <span class="hljs-literal">NULL</span>
+
+<span class="hljs-keyword">if</span> <span class="hljs-punctuation">(</span>weighted_noise<span class="hljs-operator">==</span><span class="hljs-literal">TRUE</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">{</span>
+  weight <span class="hljs-operator">&lt;-</span> <span class="hljs-built_in">abs</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">c</span><span class="hljs-punctuation">(</span><span class="hljs-number">1</span><span class="hljs-operator">:</span>n<span class="hljs-punctuation">)</span><span class="hljs-operator">-</span><span class="hljs-punctuation">(</span>n<span class="hljs-operator">+</span><span class="hljs-number">1</span><span class="hljs-punctuation">)</span><span class="hljs-operator">/</span><span class="hljs-number">2</span><span class="hljs-punctuation">)</span>
+  
+  weight <span class="hljs-operator">&lt;-</span> <span class="hljs-built_in">ceiling</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">max</span><span class="hljs-punctuation">(</span>weight<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-operator">-</span>weight
+  
+  weight <span class="hljs-operator">&lt;-</span> <span class="hljs-punctuation">(</span>weight<span class="hljs-operator">-</span><span class="hljs-built_in">floor</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">min</span><span class="hljs-punctuation">(</span>weight<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-operator">/</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">ceiling</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">max</span><span class="hljs-punctuation">(</span>weight<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-operator">-</span>
+                                           <span class="hljs-built_in">floor</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">min</span><span class="hljs-punctuation">(</span>weight<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+  
+  
+  weight<span class="hljs-punctuation">[</span>which<span class="hljs-punctuation">(</span>weight<span class="hljs-operator">&lt;=</span><span class="hljs-number">0.3</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">]</span> <span class="hljs-operator">&lt;-</span> <span class="hljs-number">0.3</span>
+  
+  weight<span class="hljs-punctuation">[</span>which<span class="hljs-punctuation">(</span>weight<span class="hljs-operator">&gt;=</span><span class="hljs-number">0.6</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">]</span> <span class="hljs-operator">&lt;-</span> <span class="hljs-number">0.6</span>
+<span class="hljs-punctuation">}</span><span class="hljs-keyword">else</span><span class="hljs-punctuation">{</span>
+  weight <span class="hljs-operator">=</span> <span class="hljs-built_in">rep</span><span class="hljs-punctuation">(</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span>n<span class="hljs-punctuation">)</span>
+<span class="hljs-punctuation">}</span>
+
+
+<span class="hljs-keyword">for</span> <span class="hljs-punctuation">(</span>i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span><span class="hljs-operator">:</span>n<span class="hljs-punctuation">)</span><span class="hljs-punctuation">{</span>
+  noisy1 <span class="hljs-operator">&lt;-</span> pure_curve<span class="hljs-punctuation">[</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span>i<span class="hljs-punctuation">]</span><span class="hljs-operator">+</span>weight<span class="hljs-punctuation">[</span>i<span class="hljs-punctuation">]</span><span class="hljs-operator">*</span>rnorm<span class="hljs-punctuation">(</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span>sd<span class="hljs-punctuation">)</span>
+  
+  noisy2 <span class="hljs-operator">&lt;-</span> pure_curve<span class="hljs-punctuation">[</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span>i<span class="hljs-punctuation">]</span><span class="hljs-operator">+</span>weight<span class="hljs-punctuation">[</span>i<span class="hljs-punctuation">]</span><span class="hljs-operator">*</span>rnorm<span class="hljs-punctuation">(</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span>sd<span class="hljs-punctuation">)</span>
+  
+  noisy3 <span class="hljs-operator">&lt;-</span> pure_curve<span class="hljs-punctuation">[</span><span class="hljs-number">3</span><span class="hljs-punctuation">,</span>i<span class="hljs-punctuation">]</span>
+  
+  noisy <span class="hljs-operator">&lt;-</span> rbind<span class="hljs-punctuation">(</span>noisy1<span class="hljs-punctuation">,</span>noisy2<span class="hljs-punctuation">,</span>noisy3<span class="hljs-punctuation">)</span>
+  
+  noisy <span class="hljs-operator">&lt;-</span> apply<span class="hljs-punctuation">(</span>noisy<span class="hljs-punctuation">,</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>x<span class="hljs-punctuation">)</span><span class="hljs-punctuation">{</span>x<span class="hljs-operator">/</span>norm2<span class="hljs-punctuation">(</span>x<span class="hljs-punctuation">)</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">)</span>
+  
+  manifoldata <span class="hljs-operator">&lt;-</span> cbind<span class="hljs-punctuation">(</span>manifoldata<span class="hljs-punctuation">,</span>noisy<span class="hljs-punctuation">)</span>
+  
+<span class="hljs-punctuation">}</span>
+</div></code></pre>
+<h4 dir="auto" id="step-2-fit-the-fbf-using-the-code-from">Step 2: Fit the FBF using the code from</h4>
+<pre><code class="code-line language-R" dir="auto"><div><span class="hljs-comment"># RFBF algorithm begins here</span>
+
+<span class="hljs-comment">## initial curve </span>
+gamma_ini <span class="hljs-operator">&lt;-</span> gamma_given<span class="hljs-punctuation">(</span>resolution<span class="hljs-punctuation">,</span>y0<span class="hljs-punctuation">,</span>y1<span class="hljs-punctuation">,</span><span class="hljs-number">1</span><span class="hljs-punctuation">)</span>
+
+<span class="hljs-comment">## Fitting RFBF </span>
+sol <span class="hljs-operator">&lt;-</span> RFBF_fitting<span class="hljs-punctuation">(</span>gamma_ini<span class="hljs-punctuation">,</span> manifoldata<span class="hljs-punctuation">,</span> y0<span class="hljs-punctuation">,</span>y1<span class="hljs-punctuation">,</span>h<span class="hljs-punctuation">,</span>rho<span class="hljs-punctuation">)</span>
+
+sol <span class="hljs-operator">&lt;-</span> apply<span class="hljs-punctuation">(</span>sol<span class="hljs-punctuation">,</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>x<span class="hljs-punctuation">)</span>x<span class="hljs-operator">/</span>norm2<span class="hljs-punctuation">(</span>x<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+
+
+
+<span class="hljs-comment">## smoothing the flow </span>
+h_smoothing <span class="hljs-operator">=</span> h
+
+sol_smoothing <span class="hljs-operator">=</span> FBF_smoothing<span class="hljs-punctuation">(</span>sol<span class="hljs-punctuation">,</span>h_smoothing<span class="hljs-punctuation">)</span>
+
+<span class="hljs-comment">## interpolation for the flow  </span>
+dist_ini <span class="hljs-operator">=</span> norm2<span class="hljs-punctuation">(</span>gamma_ini<span class="hljs-punctuation">[</span><span class="hljs-punctuation">,</span><span class="hljs-number">2</span><span class="hljs-punctuation">]</span><span class="hljs-operator">-</span>gamma_ini<span class="hljs-punctuation">[</span><span class="hljs-punctuation">,</span><span class="hljs-number">3</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">)</span>
+
+curve_fbf <span class="hljs-operator">=</span> FBF_interpolation<span class="hljs-punctuation">(</span>sol_smoothing<span class="hljs-punctuation">,</span>dist_ini<span class="hljs-punctuation">)</span>
+
+
+
+<span class="hljs-comment">## plot the result in 3D</span>
+open3d<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>
+spheres3d<span class="hljs-punctuation">(</span><span class="hljs-built_in">c</span><span class="hljs-punctuation">(</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>radius <span class="hljs-operator">=</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>color<span class="hljs-operator">=</span><span class="hljs-string">&quot;yellow&quot;</span><span class="hljs-punctuation">,</span>alpha<span class="hljs-operator">=</span><span class="hljs-number">1</span><span class="hljs-punctuation">)</span>
+points3d<span class="hljs-punctuation">(</span>manifoldata<span class="hljs-punctuation">[</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>manifoldata<span class="hljs-punctuation">[</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>manifoldata<span class="hljs-punctuation">[</span><span class="hljs-number">3</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>alpha<span class="hljs-operator">=</span><span class="hljs-number">0.9</span><span class="hljs-punctuation">)</span>
+rgl.spheres<span class="hljs-punctuation">(</span>curve_fbf<span class="hljs-punctuation">[</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>curve_fbf<span class="hljs-punctuation">[</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>curve_fbf<span class="hljs-punctuation">[</span><span class="hljs-number">3</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> r <span class="hljs-operator">=</span> <span class="hljs-number">0.005</span><span class="hljs-punctuation">,</span> color <span class="hljs-operator">=</span> <span class="hljs-string">&quot;red&quot;</span><span class="hljs-punctuation">)</span>  
+</div></code></pre>
+<h2 dir="auto" id="real-data-applications">Real Data Applications</h2>
+<h3 dir="auto" id="seismological-data">Seismological Data</h3>
+<p dir="auto">In our analysis, we considered the epicenters of the earthquake data and scaled the latitude/longitude of the epicenter to Cartesian coordinates in <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="double-struck">R</mi><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathbb">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></eq>. The Cartesian coordinates of the earthquake data are contained in columns 2 to 4 of the <a href="./data%20sets/seismology%20cartesian.csv"><strong>seismology cartesian.csv</strong></a> file.</p>
+<p dir="auto">The <a href="./RFBF%20Seismology%20Demo.R"><strong>RFBF Seismology Demo.R</strong></a> file generates the results in <em>Figure 9</em>. As shown in <em>Figure 9</em>, we considered 3 different sets of boundary points, namely (a)-(c), (d)-(f) and (g)-(i). For each set of boundary points, we fitted FBF with 3 different values of <code>h</code>. For example, if we let <code>set_idx=1</code>, <code>h_idx=2</code>, <code>resolution=30</code>, <code>rho=1</code> and <code>eps=0.01</code>, we will obtain the FBF shown in blue in <em>Figure 9(b)</em>.</p>
+<div  dir="auto" ></div>
+<center><img src="./Images/Figure9.JPG" alt="centered image" width="800"/></center>
+<h3 dir="auto" id="labeled-faces-in-the-wild">Labeled Faces in the Wild</h3>
+<p dir="auto">The image data set used in the analysis contains 264 face images of 66 people, with four images of each person. Each image has been resized to <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>50</mn><mo>×</mo><mn>37</mn></mrow><annotation encoding="application/x-tex">50 \times 37</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">50</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">37</span></span></span></span></eq> pixels and becomes a vector in <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="double-struck">R</mi><mn>1850</mn></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^{1850}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathbb">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1850</span></span></span></span></span></span></span></span></span></span></span></span></eq>. The <a href="./data%20sets/image_faces_33by2by4.csv"><strong>image_faces_33by2by4.csv</strong></a> file contains the image data with columns representing the features in <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="double-struck">R</mi><mn>1850</mn></msup></mrow><annotation encoding="application/x-tex">\mathbb{R}^{1850}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathbb">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1850</span></span></span></span></span></span></span></span></span></span></span></span></eq>.</p>
+<p dir="auto">The <a href="./RFBF%20Image%20Demo.R"><strong>RFBF Image Demo.R</strong></a> file shows the FBF fitting from the image data set with specified boundary points. The images plotted in <em>Figure 10</em> are constructed using <a href="./face_img_plot.py"><strong>face_img_plot.py</strong></a> in Python.</p>
+<div  dir="auto" ></div>
+<center><img src="./Images/Figure10.JPG" alt="centered image" width="800"/></center></div>
+        </div>
+</body>
+</html>
