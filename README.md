@@ -6,13 +6,13 @@ This is a repository of random fixed boundary flows proposed in Yao, Z., Xia, Y.
 The FBF Algorithm obtains a discrete flow connecting the fixed boundary points `y0` and `y1` from the given manifold date in the ambient space. Each point of the flow moves along the direction of the local vector field, which is determined by the scale parameter `h`.
 
 The core part of the algorithm is contained in the following four R source files. 
-- [**add_functions.R**](<./RFBF functions/add_functions.R>) contains all the user-defined functions for the calculation. For example, finding local points in a given neighbourhood and computing the $k$-eigenvector.
+- [**add_functions.R**](<./RFBF functions/add_functions.R>) contains all the user-defined functions for the calculation. For example, finding local points in a given neighbourhood and computing the $k$-th eigenvector.
 - [**RFBF_fitting_function.R**](<./RFBF functions/RFBF_fitting_function.R>) contains the iterative algorithm to determine FBFs. This file is corresponding to steps 1 to 3 in *Algorithm 1* in the paper.
 - [**RFBF_interpolation.R**](<./RFBF functions/RFBF_interpolation.R>) performs linear interpolation to the flow. This file is corresponding to step 4 in *Algorithm 1* in the paper.
 - [**RFBF_smoothing.R**](<./RFBF functions/RFBF_smoothing.R>) performs local smoothing to the flow when necessary.
 
 ## Synthetic Data Studies
-Two testing manifolds, unit sphere $S^2$ and a right-circular unit cone, have been investigated to study the performance of the FBF algorithm when analysing random data sets.
+Two testing manifolds, a unit sphere $S^2$ and a right-circular unit cone, have been investigated to study the performance of the FBF algorithm when analysing random data sets.
 
 ###  RFBFs on the unit sphere
 We considered the following three types of population curves and used them to generate random data sets.
@@ -23,7 +23,8 @@ We considered the following three types of population curves and used them to ge
 The file [**Simulation Demo Sphere.R**](<./Simulation Demo Sphere.R>) generates the numeric results in Figures 5-6 and *Table 1*. The R file consists of two parts:
 1. Generating random data sets using parameters `type`, `case` and `sd`. For example, we set `type="sphere"`, `case="c"` and `sd=0.015` to generate the noisy $C$-shaped data shown in *Figure 5(a)*.
 2. Fitting the FBF using parameters `y0`, `y1`, `resolution`, `h`, `rho`, and `esp`.
-For example, we set `y0=c(0.58676580, 0.03460339, 0.80901699)`, `y1=c(-0.3904378, 0.4393744, 0.8090170)`, `resolution=20`, `h=0.08`, `rho=0.95`, `eps=0.01` and obtained the flow plotted in *Figure 5(d)*. In *Figures 5-6*, we visualise the FBFs in the ambient space using R package <span style="color: red;">`rgl`</span>. To obtain the mean errors in *Table 1*, we generated 10 random data sets for each population flow and run the FBF algorithm with different values of `h`.
+For example, we set `y0=c(0.58676580, 0.03460339, 0.80901699)`, `y1=c(-0.3904378, 0.4393744, 0.8090170)`, `resolution=20`, `h=0.08`, `rho=0.95`, `eps=0.01` and obtained the flow plotted in *Figure 5(d)*. In *Figures 5-6*, we visualise the FBFs in the ambient space using R package <span style="color: red;">`rgl`</span>. Furthermore, we considered two closed population flows, a whole closed two-fold star-shaped flow in [**2fold_whole.csv**](<./data sets/2fold_whole.csv>) and a whole closed two-fold star-shaped flow in [**6fold_whole.csv**](<./data sets/6fold_whole.csv>). The FBFs plotted in *Figure 6* are obtained by fitting the random data parts by parts. To obtain the mean errors in *Table 1*, we generated 10 random data sets for each population flow and run the FBF algorithm with different values of `h`.
+
 
 ### RFBFs on a right-circular unit cone
 We considered the following three types of population curves on a right-circular unit cone with apex at $(0, 0, 0)$, height `H = 1`, and radius `R = 1`. Then, we generated random data sets using these population flows.
@@ -132,7 +133,7 @@ for (i in 1:n){
 }
 ```
 
-#### Step 2: Fit the FBF using the code from 
+#### Step 2: Fit the FBF and visualise the flow in the ambient space 
 ```R
 # RFBF algorithm begins here
 
