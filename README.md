@@ -20,7 +20,7 @@ We considered the following three types of population curves and used them to ge
 - [**sphere_6fold.csv**](<./data sets/sphere_6fold.csv>) contains a quarter of the six-fold star-shaped flow.
 - [**sphere_2fold.csv**](<./data sets/sphere_2fold.csv>) contains half of the two-fold star-shaped flow. 
 
-The file [**Simulation Demo Sphere.R**](<./Simulation Demo Sphere.R>) generates the numeric results in Figures 5-6 and *Table 1*. The R file consists of two parts:
+The file [**Simulation Demo Sphere.R**](<./Simulation Demo Sphere.R>) generates the numeric results in *Figures 5-6* and *Table 1*. The R file consists of two parts:
 1. Generating random data sets using parameters `type`, `case` and `sd`. For example, we set `type="sphere"`, `case="c"` and `sd=0.015` to generate the noisy $C$-shaped data shown in *Figure 5(a)*.
 2. Fitting the FBF using parameters `y0`, `y1`, `resolution`, `h`, `rho`, and `esp`.
 For example, we set `y0=c(0.58676580, 0.03460339, 0.80901699)`, `y1=c(-0.3904378, 0.4393744, 0.8090170)`, `resolution=20`, `h=0.08`, `rho=0.95`, `eps=0.01` and obtained the flow plotted in *Figure 5(d)*. In *Figures 5-6*, we visualise the FBFs in the ambient space using R package <span style="color: red;">`rgl`</span>. Furthermore, we considered two closed population flows, a whole closed two-fold star-shaped flow in [**2fold_whole.csv**](<./data sets/2fold_whole.csv>) and a whole closed two-fold star-shaped flow in [**6fold_whole.csv**](<./data sets/6fold_whole.csv>). The FBFs plotted in *Figure 6* are obtained by fitting the random data parts by parts. To obtain the mean errors in *Table 1*, we generated 10 random data sets for each population flow and run the FBF algorithm with different values of `h`.
